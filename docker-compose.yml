@@ -7,6 +7,7 @@ services:
       - ./src:/var/www/html
     depends_on:
       - redis
+      - otel-collector
     networks:
       - app-network
 
@@ -24,6 +25,13 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
+    networks:
+      - app-network
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
     networks:
       - app-network
 
